@@ -88,7 +88,6 @@ public class GenevaDocLineTokenHandler extends MappingContentLineTokenHandler {
         return LineTokenData.EMPTY;
     }
 
-
     protected LineToken docEndNotReadyHandle(LineToken lineToken) {
         return lineToken;
     }
