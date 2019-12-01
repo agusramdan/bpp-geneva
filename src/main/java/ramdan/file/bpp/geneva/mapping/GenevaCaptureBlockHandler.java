@@ -1,13 +1,15 @@
 package ramdan.file.bpp.geneva.mapping;
 
 import lombok.Setter;
+import lombok.val;
 import ramdan.file.bpp.geneva.config.GenevaCaptureBlockConfig;
 import ramdan.file.line.token.LineToken;
+import ramdan.file.line.token.Tokens;
 import ramdan.file.line.token.data.LineTokenData;
+import ramdan.file.line.token.data.LineTokensBlockSimple;
 import ramdan.file.line.token.data.MultiLineData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,12 +20,16 @@ public class GenevaCaptureBlockHandler extends GenevaMappingHandler {
     private List<LineToken> capture = new ArrayList<>() ;
     @Setter
     private GenevaCaptureBlockConfig config ;
-    protected String simpleConfig;
-    protected String blockConfig;
+
+    private String simpleConfig;
+    private String blockConfig;
     private Block block= Block.NONE;
 
+    private LineToken startBlock;
+    private LineToken endBlock;
+    protected List<Tokens> before=new ArrayList<>();
+    protected List<Tokens> after=new ArrayList<>();
     protected void addTagname(String tagname,Boolean remove){
-
         config.addTagname(tagname,remove);
     }
     protected void configToken(LineToken lineToken){
@@ -38,12 +44,8 @@ public class GenevaCaptureBlockHandler extends GenevaMappingHandler {
     public GenevaCaptureBlockHandler(GenevaCaptureBlockConfig config){
         this.config = config;
     }
-    public GenevaCaptureBlockHandler(String startTagname, String endTagname, boolean remove, String ... tagnames){
-        this(startTagname,endTagname,null,null,remove,Arrays.asList(tagnames));
-    }
-
-    public GenevaCaptureBlockHandler(String startTagname, String endTagname, String simpleConfig, String blockConfig, boolean remove, Collection<String> tagnames) {
-        this(new GenevaCaptureBlockConfig(startTagname,endTagname));
+    public GenevaCaptureBlockHandler(String name,String startTagname, String endTagname, String simpleConfig, String blockConfig, boolean remove, Collection<String> tagnames) {
+        this(new GenevaCaptureBlockConfig(name,startTagname,endTagname));
         this.simpleConfig = simpleConfig;
         this.blockConfig =blockConfig;
         if(tagnames!=null){
@@ -53,6 +55,17 @@ public class GenevaCaptureBlockHandler extends GenevaMappingHandler {
         }
         prepare();
     }
+//    public GenevaCaptureBlockHandler(String startTagname, String endTagname, String simpleConfig, String blockConfig, boolean remove, Collection<String> tagnames) {
+//        this(new GenevaCaptureBlockConfig(startTagname,endTagname));
+//        this.simpleConfig = simpleConfig;
+//        this.blockConfig =blockConfig;
+//        if(tagnames!=null){
+//            for (String key : tagnames) {
+//                config.addTagname(key,remove);
+//            }
+//        }
+//        prepare();
+//    }
 
     private boolean prepared = false;
     @Override
@@ -65,8 +78,12 @@ public class GenevaCaptureBlockHandler extends GenevaMappingHandler {
 
     protected void reset(){
         super.reset();
+        before.clear();
         capture.clear();
+        after.clear();
         block = Block.NONE;
+        startBlock = null;//LineTokenData.newInstance(config.getStartTagname());
+        endBlock=null;//LineTokenData.newInstance(config.getEndTagname());
     }
 
     protected boolean isMatchCapture(LineToken lineToken){
@@ -78,42 +95,52 @@ public class GenevaCaptureBlockHandler extends GenevaMappingHandler {
     protected void handleCapture(List<LineToken> capture){
 
     }
-    protected LineToken handleRelease(LineToken lineToken){
+    protected Tokens handleRelease(LineToken lineToken){
         handleCapture(capture);
-        capture.add(lineToken);
-        lineToken = MultiLineData.newInstance(capture);
+        val result = new ArrayList<Tokens>(before);
+        result.add(new LineTokensBlockSimple(
+                config.getTagname(),
+                config.getStartTagname(),
+                config.getEndTagname(),
+                startBlock,
+                endBlock,
+                capture));
+        result.addAll(after);
+        result.add(lineToken);
+        before.clear();
         capture.clear();
+        after.clear();
         block= Block.END;
-        return lineToken;
+        return MultiLineData.tokens(result);
     }
     @Override
-    protected LineToken endTagHandle(LineToken lineToken) {
-        switch (block) {
-            case NONE: capture.add(0,LineTokenData.newInstance(config.getStartTagname()));
-            case FOUND:capture.add(LineTokenData.newInstance(config.getEndTagname())); break;
-            case END: return lineToken;
+    protected Tokens endTagHandle(LineToken lineToken) {
+        if(block== Block.END){
+            return lineToken;
         }
         return handleRelease(lineToken);
     }
 
     @Override
-    protected LineToken matchContent(LineToken lineToken) {
+    protected Tokens matchContent(LineToken lineToken) {
+        Tokens result = lineToken;
         if (lineToken.equalIgnoreCase(0, config.getStartTagname())) {
             block = Block.FOUND;
-            capture.add(0,lineToken);
-            lineToken = LineTokenData.EMPTY;
+            startBlock =lineToken;
+            result = LineTokenData.EMPTY;
         }else if (lineToken.equalIgnoreCase(0,config.getEndTagname())){
-            lineToken =handleRelease(lineToken);
+            endBlock=lineToken;
+            result =handleRelease(LineTokenData.EMPTY);
         }else  if (block == Block.FOUND ){
             capture.add(lineToken);
-            lineToken = LineTokenData.EMPTY;
+            result = LineTokenData.EMPTY;
         } else if (isMatchCapture(lineToken)) {
             capture.add(lineToken);
             if(isMatchRemove(lineToken)){
-                lineToken = LineTokenData.EMPTY;
+                result = LineTokenData.EMPTY;
             }
         }
-        return lineToken;
+        return result;
     }
 
     enum Block {

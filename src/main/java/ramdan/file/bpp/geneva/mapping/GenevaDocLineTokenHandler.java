@@ -3,7 +3,9 @@ package ramdan.file.bpp.geneva.mapping;
 import lombok.Getter;
 import lombok.val;
 import ramdan.file.line.token.LineToken;
+import ramdan.file.line.token.Tokens;
 import ramdan.file.line.token.data.LineTokenData;
+import ramdan.file.line.token.data.MultiLineData;
 import ramdan.file.line.token.filter.MultiLineTokenFilter;
 import ramdan.file.line.token.filter.RegexMatchRule;
 import ramdan.file.line.token.handler.MappingContentLineTokenHandler;
@@ -60,23 +62,29 @@ public class GenevaDocLineTokenHandler extends MappingContentLineTokenHandler {
         skip=true;
     }
     @Override
-    public LineToken process(LineToken lineToken) {
+    public Tokens process(LineToken lineToken) {
         String tagname = lineToken.getTagname();
+        Tokens result;
         if(tagname.startsWith("DOCSTART_")){
-            if(docStart){
-                lineToken= docStartAlreadyHandle(lineToken);
-                docReset();
+            val tokens= new ArrayList<Tokens>();
+            if(docStart) {
+                result= docStartAlreadyHandle(lineToken);
+                docReset1();
+                return MultiLineData.merge(result,docStartHandle(lineToken));
+            }else {
+                result= docStartHandle(lineToken);
             }
-            lineToken = docStartHandle(lineToken);
+
             docStart=true;
-            return lineToken;
+            return result;
         }else if(tagname.equals("DOCEND")) {
             if(!docStart){
                 return docEndNotReadyHandle(lineToken);
+            }else {
+                result = docEndHandle(lineToken);
+                docReset1();
             }
-            lineToken = docEndHandle(lineToken);
-            docReset1();
-            return lineToken;
+            return result;
         }
         if(docStart && !skip){
             if(tagnameValueGetData.accept(lineToken)){
@@ -88,19 +96,19 @@ public class GenevaDocLineTokenHandler extends MappingContentLineTokenHandler {
         return LineTokenData.EMPTY;
     }
 
-    protected LineToken docEndNotReadyHandle(LineToken lineToken) {
+    protected Tokens docEndNotReadyHandle(LineToken lineToken) {
+        return null;
+    }
+
+    protected Tokens docEndHandle(LineToken lineToken) {
         return lineToken;
     }
 
-    protected LineToken docEndHandle(LineToken lineToken) {
+    protected Tokens docStartHandle(LineToken lineToken) {
         return lineToken;
     }
 
-    protected LineToken docStartHandle(LineToken lineToken) {
-        return lineToken;
-    }
-
-    protected LineToken docStartAlreadyHandle(LineToken lineToken) {
+    protected Tokens docStartAlreadyHandle(LineToken lineToken) {
         throw new RuntimeException("Already Doc Start");
     }
 

@@ -5,6 +5,7 @@ import ramdan.file.bpp.geneva.config.GenevaPairConfig;
 import ramdan.file.bpp.geneva.config.RulePair;
 import ramdan.file.bpp.geneva.data.TokenEditable;
 import ramdan.file.line.token.LineToken;
+import ramdan.file.line.token.Tokens;
 import ramdan.file.line.token.config.ConfigHolder;
 import ramdan.file.line.token.data.LineTokenData;
 import ramdan.file.line.token.data.MultiLineData;
@@ -51,8 +52,9 @@ public class GenevaPairMappingHandler extends GenevaMappingHandler {
 
 
     @Override
-    public LineToken matchContent(LineToken lineToken) {
+    public Tokens matchContent(LineToken lineToken) {
         String tagname = lineToken.getTagname();
+        Tokens result = lineToken;
         if (rulePair == null) {
             config.pairRuleByStart(tagname, new CallbackRulePair(lineToken));
         }
@@ -61,17 +63,17 @@ public class GenevaPairMappingHandler extends GenevaMappingHandler {
 
             if(rulePair.isMatchEnd(tagname)){
                 if(rulePair.isRemoveMatchPair()){
-                    lineToken = currentRow;
+                    result = currentRow;
                 }else {
-                    lineToken = MultiLineData.merge(lineToken,currentRow);
+                    result = MultiLineData.merge(lineToken,currentRow);
                 }
                 currentRow = null;
                 rulePair = null;
             }else if(rulePair.isRemoveMatchPair()){
-                lineToken = LineTokenData.EMPTY;
+                result = LineTokenData.EMPTY;
             }
         }
-        return  lineToken;
+        return  result;
     }
 
     @AllArgsConstructor

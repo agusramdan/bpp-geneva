@@ -22,7 +22,7 @@ public class TokenEditable extends LineTokenBase {
     @Getter
     private Integer end;
     @Getter @Setter
-    private  DecimalFormat amountFormat = new DecimalFormat("#,##0.0#");
+    private DecimalFormat amountFormat = new DecimalFormat("#,##0.0#");
     private DoubleConversionErrorHandler amountHandler = new AmountDoubleConversionErrorHandler();
     private final List<String> target;
     public TokenEditable(LineToken source ,String name , boolean copy,int ... idx) {
@@ -63,7 +63,6 @@ public class TokenEditable extends LineTokenBase {
     public int length() {
         return target.size();
     }
-
 
     public LineToken copyLineToken() {
         return newLineToken(this.getFileName(), this.getStart(), this.getEnd(), target.toArray(new String[target.size()]));
@@ -106,6 +105,9 @@ public class TokenEditable extends LineTokenBase {
     public String set(int idx,int d){
         return  set(idx,Integer.toString(d));
     }
+    public void setupAmount(int idxAmount) {
+        setAmount(idxAmount,getAmount(idxAmount));
+    }
     public void setupAmount(int idxAmount, int idxCredit) {
         setAmount(idxAmount,idxCredit,getAmount(idxAmount,idxCredit));
     }
@@ -132,6 +134,13 @@ public class TokenEditable extends LineTokenBase {
     private double addAmount0(int idxAmount, int idxCredit, TokenEditable from){
         var targetAmount = getAmount(idxAmount,idxCredit);
         targetAmount+=from.getAmount(idxAmount,idxCredit);
+
+        setAmount(idxAmount,idxCredit,targetAmount);
+        return targetAmount;
+    }
+    public double addAmount(int idxAmount, int idxCredit, double targetAmount){
+        //var targetAmount = getAmount(idxAmount,idxCredit);
+        targetAmount+=getAmount(idxAmount,idxCredit);
 
         setAmount(idxAmount,idxCredit,targetAmount);
         return targetAmount;
@@ -231,17 +240,22 @@ public class TokenEditable extends LineTokenBase {
 
     }
 
+    public TokenEditable mapTokensFrom(LineToken source,int ... idxs) {
+        for (int i=0;i<idxs.length  ;i++) {
+            set(i+1,source.get(idxs[i]));
+        }
+        return this;
+    }
     public void copyTokensFrom(LineToken source,int ... idxs) {
         for (int i  :idxs) {
             set(i,source.get(i));
         }
     }
-    public boolean equalTokens(LineToken lineToken, int i, int ...idx) {
-        boolean equal = equal(i,lineToken.get(i));
-
+    public boolean equalTokens(LineToken lineToken, int ...idx) {
+        boolean equal = false;// equal(i,lineToken.get(i));
         for (int in : idx) {
+            equal=equal(in,lineToken.get(in));
             if(!equal) break;
-            equal= equal(in,lineToken.get(in));
         }
         return equal;
     }

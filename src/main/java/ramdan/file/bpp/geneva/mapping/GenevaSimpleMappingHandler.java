@@ -5,6 +5,7 @@ import lombok.val;
 import ramdan.file.bpp.geneva.config.GenevaSimpleConfig;
 import ramdan.file.bpp.geneva.config.RuleSimple;
 import ramdan.file.line.token.LineToken;
+import ramdan.file.line.token.Tokens;
 import ramdan.file.line.token.config.ConfigHolder;
 import ramdan.file.line.token.data.MultiLineData;
 import ramdan.file.line.token.handler.Callback;
@@ -31,7 +32,7 @@ public class GenevaSimpleMappingHandler extends GenevaMappingHandler {
 
 
     @Override
-    public LineToken matchContent(LineToken lineToken) {
+    public Tokens matchContent(LineToken lineToken) {
         val result = new ArrayList<LineToken>();
 
         val input = new LinkedList<LineToken>();
@@ -48,7 +49,7 @@ public class GenevaSimpleMappingHandler extends GenevaMappingHandler {
             }
         }
 
-        return  MultiLineData.newInstance(result);
+        return  MultiLineData.tokens(result);
     }
     private class CallbackRuleSimple implements Callback<RuleSimple>{
 

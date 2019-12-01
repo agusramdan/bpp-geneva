@@ -35,7 +35,7 @@ public class GenevaPairCaptureMappingHandler extends GenevaMappingHandler {
             if((rulePairCapture = config.getPairRuleByStart(tagname))!=null){
                 return lineToken;
             }
-           lineToken = LineTokenData.EMPTY;
+            return LineTokenData.EMPTY;
         } else
         if(rulePairCapture.isMatchEnd(tagname)){
             rulePairCapture =null;

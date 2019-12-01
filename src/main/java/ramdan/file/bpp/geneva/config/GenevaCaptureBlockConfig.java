@@ -12,10 +12,16 @@ public class GenevaCaptureBlockConfig implements Config {
 
     private Map<String,Boolean> tagnames =new HashMap<>();
     @Getter
+    protected String tagname;
+    @Getter
     protected String startTagname;
     @Getter
     protected String endTagname;
-
+    public GenevaCaptureBlockConfig(String tagname,String startTagname, String endTagname) {
+        this.tagname = tagname;
+        this.startTagname = startTagname;
+        this.endTagname = endTagname;
+    }
     public GenevaCaptureBlockConfig(String startTagname, String endTagname) {
         this.startTagname = startTagname;
         this.endTagname = endTagname;

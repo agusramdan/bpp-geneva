@@ -1,7 +1,9 @@
 package ramdan.file.bpp.geneva.mapping;
 
 import ramdan.file.line.token.LineToken;
+import ramdan.file.line.token.Tokens;
 import ramdan.file.line.token.config.FileConfigHolder;
+import ramdan.file.line.token.data.LineTokenData;
 import ramdan.file.line.token.filter.DefaultMultiLineTokenFilter;
 import ramdan.file.line.token.handler.MappingContentLineTokenHandler;
 import ramdan.file.line.token.listener.LineTokenListener;
@@ -34,5 +36,10 @@ public class GenevaMappingHandler extends MappingContentLineTokenHandler {
 
     protected void reset(){
         super.reset();
+    }
+
+    @Override
+    protected Tokens endTagHandle(LineToken lineToken) {
+        return lineToken.isEmpty()? LineTokenData.newInstance("DOCEND"):lineToken;
     }
 }

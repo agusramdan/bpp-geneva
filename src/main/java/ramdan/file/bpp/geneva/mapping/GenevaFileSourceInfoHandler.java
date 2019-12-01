@@ -3,6 +3,7 @@ package ramdan.file.bpp.geneva.mapping;
 import lombok.val;
 import ramdan.file.bpp.geneva.data.TokenEditable;
 import ramdan.file.line.token.LineToken;
+import ramdan.file.line.token.Tokens;
 import ramdan.file.line.token.data.MultiLineData;
 
 import java.io.File;
@@ -13,7 +14,7 @@ public class GenevaFileSourceInfoHandler extends GenevaMappingHandler {
     private int count;
 
     @Override
-    protected LineToken endTagHandle(LineToken lineToken) {
+    protected Tokens endTagHandle(LineToken lineToken) {
         val line = lineToken.getSource();
         if(line!=null){
             count+=line.length()+1;
@@ -49,7 +50,7 @@ public class GenevaFileSourceInfoHandler extends GenevaMappingHandler {
     }
 
     @Override
-    protected LineToken matchContent(LineToken lineToken) {
+    protected Tokens matchContent(LineToken lineToken) {
         val line = lineToken.getSource();
         if(line!=null){
             count+=line.length()+1;
@@ -57,13 +58,4 @@ public class GenevaFileSourceInfoHandler extends GenevaMappingHandler {
         return super.matchContent(lineToken);
     }
 
-    @Override
-    protected LineToken alreadyStartTagHandle(LineToken lineToken) {
-        val endtag = new TokenEditable(lineToken,false);
-        endtag.set(0,"DOCEND");
-        return MultiLineData.merge(
-                endTagHandle(endtag),
-                startTagHandle(lineToken)
-        );
-    }
 }
