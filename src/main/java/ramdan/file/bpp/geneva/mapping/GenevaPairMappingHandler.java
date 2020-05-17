@@ -3,12 +3,12 @@ package ramdan.file.bpp.geneva.mapping;
 import lombok.AllArgsConstructor;
 import ramdan.file.bpp.geneva.config.GenevaPairConfig;
 import ramdan.file.bpp.geneva.config.RulePair;
-import ramdan.file.bpp.geneva.data.TokenEditable;
 import ramdan.file.line.token.LineToken;
 import ramdan.file.line.token.Tokens;
 import ramdan.file.line.token.config.ConfigHolder;
 import ramdan.file.line.token.data.LineTokenData;
 import ramdan.file.line.token.data.MultiLineData;
+import ramdan.file.line.token.data.TokenEditable;
 import ramdan.file.line.token.handler.Callback;
 
 /**

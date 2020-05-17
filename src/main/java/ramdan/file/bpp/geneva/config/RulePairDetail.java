@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.val;
 import lombok.var;
 import ramdan.file.bpp.geneva.GenevaUtils;
-import ramdan.file.bpp.geneva.data.TokenEditable;
 import ramdan.file.line.token.LineToken;
+import ramdan.file.line.token.data.TokenEditable;
 import ramdan.file.line.token.filter.SimpleMultiLineTokenFilter;
 
 import java.util.ArrayList;

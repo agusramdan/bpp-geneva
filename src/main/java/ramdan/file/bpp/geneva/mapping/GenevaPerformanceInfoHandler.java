@@ -15,7 +15,6 @@ public class GenevaPerformanceInfoHandler extends GenevaMappingHandler {
     private long duration;
     @Override
     protected Tokens startTagHandle(LineToken lineToken) {
-
         val line = lineToken.getSource();
         if(line==null){
             startTime = lineToken.timestamp();

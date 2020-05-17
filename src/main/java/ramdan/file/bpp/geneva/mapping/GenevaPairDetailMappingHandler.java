@@ -6,12 +6,12 @@ import lombok.val;
 import lombok.var;
 import ramdan.file.bpp.geneva.config.GenevaPairDetailConfig;
 import ramdan.file.bpp.geneva.config.RulePairDetail;
-import ramdan.file.bpp.geneva.data.TokenEditable;
 import ramdan.file.line.token.LineToken;
 import ramdan.file.line.token.Tokens;
 import ramdan.file.line.token.config.ConfigHolder;
 import ramdan.file.line.token.data.LineTokenData;
 import ramdan.file.line.token.data.MultiLineData;
+import ramdan.file.line.token.data.TokenEditable;
 import ramdan.file.line.token.handler.Callback;
 
 import java.util.ArrayList;
