@@ -6,9 +6,9 @@ import ramdan.file.bpp.geneva.config.GenevaSimpleConfig;
 import ramdan.file.bpp.geneva.config.RuleSimple;
 import ramdan.file.line.token.LineToken;
 import ramdan.file.line.token.Tokens;
+import ramdan.file.line.token.callback.Callback;
 import ramdan.file.line.token.config.ConfigHolder;
 import ramdan.file.line.token.data.MultiLineData;
-import ramdan.file.line.token.handler.Callback;
 
 import java.util.ArrayList;
 import java.util.Deque;
@@ -51,7 +51,7 @@ public class GenevaSimpleMappingHandler extends GenevaMappingHandler {
 
         return  MultiLineData.tokens(result);
     }
-    private class CallbackRuleSimple implements Callback<RuleSimple>{
+    private class CallbackRuleSimple implements Callback<RuleSimple> {
 
         @Setter
         LineToken lt;

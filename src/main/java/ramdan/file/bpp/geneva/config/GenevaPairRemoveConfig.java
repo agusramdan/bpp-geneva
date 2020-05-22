@@ -1,9 +1,9 @@
 package ramdan.file.bpp.geneva.config;
 
 import ramdan.file.line.token.LineToken;
+import ramdan.file.line.token.callback.Callback;
 import ramdan.file.line.token.config.Config;
 import ramdan.file.line.token.config.ConfigToken;
-import ramdan.file.line.token.handler.Callback;
 
 import java.util.ArrayList;
 import java.util.List;

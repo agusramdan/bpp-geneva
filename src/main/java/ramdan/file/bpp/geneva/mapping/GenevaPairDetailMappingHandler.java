@@ -8,11 +8,11 @@ import ramdan.file.bpp.geneva.config.GenevaPairDetailConfig;
 import ramdan.file.bpp.geneva.config.RulePairDetail;
 import ramdan.file.line.token.LineToken;
 import ramdan.file.line.token.Tokens;
+import ramdan.file.line.token.callback.Callback;
 import ramdan.file.line.token.config.ConfigHolder;
 import ramdan.file.line.token.data.LineTokenData;
 import ramdan.file.line.token.data.MultiLineData;
 import ramdan.file.line.token.data.TokenEditable;
-import ramdan.file.line.token.handler.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +107,7 @@ public class GenevaPairDetailMappingHandler extends GenevaMappingHandler {
     }
 
     @AllArgsConstructor
-    class CallbackRulePairDetail implements Callback<RulePairDetail>{
+    class CallbackRulePairDetail implements Callback<RulePairDetail> {
         private LineToken source;
         @Override
         public void call(RulePairDetail rp) {

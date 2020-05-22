@@ -4,9 +4,9 @@ import lombok.Setter;
 import ramdan.file.bpp.geneva.config.GenevaPairRemoveConfig;
 import ramdan.file.bpp.geneva.config.RulePairRemove;
 import ramdan.file.line.token.LineToken;
+import ramdan.file.line.token.callback.Callback;
 import ramdan.file.line.token.config.ConfigHolder;
 import ramdan.file.line.token.data.LineTokenData;
-import ramdan.file.line.token.handler.Callback;
 
 /**
  * ramdan.file.bpp.geneva.mapping.GenevaPairMappingHandler
