@@ -1,5 +1,6 @@
 package ramdan.file.bpp.geneva.mapping;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import ramdan.file.line.token.LineToken;
 import ramdan.file.line.token.Tokens;
@@ -8,6 +9,7 @@ import ramdan.file.line.token.data.TokenEditable;
 
 import java.io.File;
 
+@Slf4j
 public class GenevaFileSourceInfoHandler extends GenevaMappingHandler {
 
     private TokenEditable fileSourceInfo ;
@@ -30,7 +32,7 @@ public class GenevaFileSourceInfoHandler extends GenevaMappingHandler {
 
     @Override
     protected LineToken startTagHandle(LineToken lineToken) {
-        System.out.println("Start "+lineToken.getSource().getSource());
+        log.info("Start {}",lineToken.getSource().getSource());
         count = 0;
         File file = null;
         val line = lineToken.getSource();

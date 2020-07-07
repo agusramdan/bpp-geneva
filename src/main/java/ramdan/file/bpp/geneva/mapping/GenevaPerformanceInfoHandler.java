@@ -1,11 +1,13 @@
 package ramdan.file.bpp.geneva.mapping;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import ramdan.file.line.token.LineToken;
 import ramdan.file.line.token.Tokens;
 
 import java.util.Date;
 
+@Slf4j
 public class GenevaPerformanceInfoHandler extends GenevaMappingHandler {
 
     //private TokenEditable fileSourceInfo ;
@@ -34,10 +36,12 @@ public class GenevaPerformanceInfoHandler extends GenevaMappingHandler {
             endTagReadTime=line.timestamp();
         }
         duration=(endTime-startTime);
-        System.out.printf("Proses %s to %s duration %d menit , latency %d detik\n",
+        log.info("Proses {} to {} duration {} menit , latency {} detik",
                 new Date(startTime).toString(),
                 new Date(endTime).toString(),
-                duration/60000,(endTime-endTagReadTime)/6000);
+                duration/60000,
+                (endTime-endTagReadTime)/6000
+        );
         return lineToken;
     }
 }
