@@ -111,7 +111,7 @@
         </repository>
         <repository>
             <id>github-linetoken</id>
-            <name>GitHub agusramdan Apache Maven Packages</name>
+            <name>GitHub agusramdan linetoken Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/agusramdan/linetoken</url>
         </repository>
         <repository>

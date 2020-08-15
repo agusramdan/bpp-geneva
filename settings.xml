@@ -5,15 +5,17 @@
 
     <servers>
         <server>
-            <id>github</id>
-            <username>${github.user}</username>
-            <password>${github.password}</password>
-        </server>
-        <server>
             <id>github-linetoken</id>
             <username>${github.user}</username>
             <password>${github.password}</password>
         </server>
+
+        <server>
+            <id>github</id>
+            <username>${github.user}</username>
+            <password>${github.password}</password>
+        </server>
+
     </servers>
 
 </settings>
