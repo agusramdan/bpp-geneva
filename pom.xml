@@ -110,14 +110,15 @@
             <snapshots><enabled>false</enabled></snapshots>
         </repository>
         <repository>
-            <id>github</id>
-            <name>GitHub agusramdan Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/agusramdan/bpp-geneva</url>
-        </repository>
-        <repository>
             <id>github-linetoken</id>
             <name>GitHub agusramdan Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/agusramdan/linetoken</url>
         </repository>
+        <repository>
+            <id>github</id>
+            <name>GitHub agusramdan Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/agusramdan/bpp-geneva</url>
+        </repository>
+
     </repositories>
 </project>
