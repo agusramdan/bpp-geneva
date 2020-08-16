@@ -16,6 +16,37 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
     </properties>
+    <scm>
+        <url>https://github.com/agusramdan/bpp-geneva.git</url>
+    </scm>
+    <profiles>
+        <profile>
+            <id>codecoverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.5</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>

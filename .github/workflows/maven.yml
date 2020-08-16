@@ -5,7 +5,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master , develop]
   pull_request:
     branches: [ master ]
 
@@ -21,7 +21,12 @@ jobs:
       with:
         java-version: 1.7
     - name: Build with Maven
-      run: mvn -B package --file pom.xml -s settings.xml
+      run: mvn -B package -P codecoverage --file pom.xml -s settings.xml
       env:
         GITHUB_USER: ${{ github.actor  }}
         GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Codecov Scan
+      uses: codecov/codecov-action@v1.0.4
+      with:
+        token: ${{ secrets.codecov_token }}
